@@ -7,7 +7,7 @@ namespace BeatmapOvermapperGUI.Commands
 {
 	class CreateCommand : ICommand
 	{
-		private static StructuredOsuMemoryReader _memoryReader = new();
+		private static StructuredOsuMemoryReader _memoryReader = StructuredOsuMemoryReader.Instance;
 
 		public event EventHandler? CanExecuteChanged;
 

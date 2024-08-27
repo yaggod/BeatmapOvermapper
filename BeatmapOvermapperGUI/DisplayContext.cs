@@ -10,7 +10,7 @@ namespace BeatmapOvermapperGUI
 	class DisplayContext : INotifyPropertyChanged
 	{
 		#region Fields
-		private static StructuredOsuMemoryReader _memoryReader = new();
+		private static StructuredOsuMemoryReader _memoryReader = StructuredOsuMemoryReader.Instance;
 
 		private DispatcherTimer _timer = new();
 		private string? _backgroundPath;
@@ -20,7 +20,7 @@ namespace BeatmapOvermapperGUI
 
 
 		public DisplayContext()
-		{
+		{ 
 			_timer.Tick += (_, _) => UpdateBeatmapData();
 			_timer.Interval = new TimeSpan(0, 0, 1);
 			_timer.Start();
