@@ -37,21 +37,7 @@ namespace BeatmapOvermapperGUI.Commands
 
 				string fullPath = Path.Combine(beatmapFolder, osuFilePath);
 				overmapper.Overmap(fullPath);
-				using var fileStream = new FileStream(folderName + ".osz", FileMode.Create);
-				using var archive = new ZipArchive(fileStream, ZipArchiveMode.Create, true);
-
-				foreach (string osuFile in Directory.EnumerateFiles(beatmapFolder))
-				{
-					if (Path.GetExtension(osuFile) != ".osu")
-						continue;
-
-					var entry = archive.CreateEntryFromFile(osuFile, Path.GetFileName(osuFile));
-				}
-
-				Process proc = new Process();
-				proc.StartInfo.FileName = fileStream.Name;
-				proc.StartInfo.UseShellExecute = true;
-				proc.Start();
+				OszCreator.GenerateAndAddOsz(Settings.SongsFolder, folderName);
 			}
 			catch(Exception ex)
 			{
