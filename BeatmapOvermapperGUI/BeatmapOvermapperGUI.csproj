@@ -17,8 +17,4 @@
     <ProjectReference Include="..\BeatmapOvermapper\BeatmapOvermapper.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controls\" />
-  </ItemGroup>
-
 </Project>
