@@ -13,7 +13,6 @@ namespace BeatmapOvermapperGUI
 		private static StructuredOsuMemoryReader _memoryReader = new();
 
 		private DispatcherTimer _timer = new();
-		private string? _lastBeatmapFilePath;
 		private string? _backgroundPath;
 		private string? _beatmapName;
 		private string? _difficultyName;
@@ -32,9 +31,6 @@ namespace BeatmapOvermapperGUI
 			_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
 			string beatmapFolder = Path.Combine(Settings.SongsFolder, _memoryReader.OsuMemoryAddresses.Beatmap.FolderName);
 			string osuFilePath = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
-			if (_lastBeatmapFilePath == osuFilePath)
-				return;
-			_lastBeatmapFilePath = osuFilePath;
 			var fullPath = Path.Combine(beatmapFolder, osuFilePath);
 			OsuFile file = OsuFile.ReadFromFile(fullPath);
 			var backgroundFile = file.Events.BackgroundInfo.Filename;
