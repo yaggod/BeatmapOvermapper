@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BeatmapOvermapperGUI"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="311" Width="440" ResizeMode="NoResize">
+        Title="MainWindow" Height="360" Width="440" ResizeMode="NoResize">
     <Window.DataContext>
         <local:MainContext/>
     </Window.DataContext>
