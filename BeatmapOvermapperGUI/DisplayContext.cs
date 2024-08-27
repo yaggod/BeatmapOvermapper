@@ -26,6 +26,8 @@ namespace BeatmapOvermapperGUI
 			_timer.Start();
 		}
 
+#pragma warning disable CS8602
+#pragma warning disable CS8601 
 		private void UpdateBeatmapData()
 		{
 			_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
@@ -38,6 +40,9 @@ namespace BeatmapOvermapperGUI
 			BeatmapName = file.Metadata.Title;
 			DifficultyName = file.Metadata.Version;
 		}
+#pragma warning restore CS8602 
+#pragma warning restore CS8601 
+
 
 		public string BackgroundPath
 		{
