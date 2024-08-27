@@ -2,3 +2,4 @@ A simple program for osu for creating difficulties with increased speeds stream.
 
 TODO:
 - Better look (rn it looks like shit lol)
+- Some kind of smoothing to make spaced streams look more natural
