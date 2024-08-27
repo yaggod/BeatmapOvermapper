@@ -1,5 +1,6 @@
-﻿using Coosu.Beatmap;
+﻿	using Coosu.Beatmap;
 using Coosu.Beatmap.Sections.HitObject;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace BeatmapOvermapper
@@ -31,10 +32,11 @@ namespace BeatmapOvermapper
 
 			var hitObjects = beatmap.HitObjects.HitObjectList;
 			List<RawHitObject> objectsToAdd = new List<RawHitObject>();
-
 			RawHitObject lastObject = null;
 			foreach (var currentObject in hitObjects)
 			{
+				if (currentObject?.RawType.HasFlag(RawObjectType.Spinner) == true)
+					continue;
 
 				if (ShouldInsertNewNote(lastObject, currentObject))
 				{
@@ -53,8 +55,7 @@ namespace BeatmapOvermapper
 		private bool ShouldInsertNewNote(RawHitObject first, RawHitObject second)
 		{
 			bool isFirstObjectCircle = first?.RawType.HasFlag(RawObjectType.Circle) == true;
-			bool isLastObjectNotSpinner = second?.RawType.HasFlag(RawObjectType.Spinner) != true;
-			if (!(isFirstObjectCircle && isLastObjectNotSpinner)) // kind of null check
+			if (!(isFirstObjectCircle)) // kind of null check
 				return false;
 
 			int offsetsDelta = second.Offset - first.Offset;
