@@ -30,15 +30,20 @@ namespace BeatmapOvermapperGUI
 #pragma warning disable CS8601 
 		private void UpdateBeatmapData()
 		{
-			_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
-			string beatmapFolder = Path.Combine(Settings.SongsFolder, _memoryReader.OsuMemoryAddresses.Beatmap.FolderName);
-			string osuFilePath = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
-			var fullPath = Path.Combine(beatmapFolder, osuFilePath);
-			OsuFile file = OsuFile.ReadFromFile(fullPath);
-			var backgroundFile = file.Events.BackgroundInfo.Filename;
-			BackgroundPath = Path.Combine(beatmapFolder, backgroundFile);
-			BeatmapName = file.Metadata.Title;
-			DifficultyName = file.Metadata.Version;
+			try
+			{
+				_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
+				string beatmapFolder = Path.Combine(Settings.SongsFolder, _memoryReader.OsuMemoryAddresses.Beatmap.FolderName);
+				string osuFilePath = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
+				var fullPath = Path.Combine(beatmapFolder, osuFilePath);
+				OsuFile file = OsuFile.ReadFromFile(fullPath);
+				var backgroundFile = file.Events.BackgroundInfo.Filename;
+				BackgroundPath = Path.Combine(beatmapFolder, backgroundFile);
+				BeatmapName = file.Metadata.Title;
+				DifficultyName = file.Metadata.Version;
+			}
+			catch
+			{ }
 		}
 #pragma warning restore CS8602 
 #pragma warning restore CS8601 
