@@ -1,6 +1,9 @@
 ﻿using BeatmapOvermapper;
 using OsuMemoryDataProvider;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
+using System.Windows;
 using System.Windows.Input;
 
 namespace BeatmapOvermapperGUI.Commands
@@ -25,12 +28,37 @@ namespace BeatmapOvermapperGUI.Commands
 
 		private static void CreateMap(Overmapper overmapper)
 		{
-			_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
-			string beatmapFolder = Path.Combine(Settings.SongsFolder, _memoryReader.OsuMemoryAddresses.Beatmap.FolderName);
-			string osuFilePath = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
+			try
+			{
+				_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
+				string folderName = _memoryReader.OsuMemoryAddresses.Beatmap.FolderName;
+				string beatmapFolder = Path.Combine(Settings.SongsFolder, folderName);
+				string osuFilePath = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
 
-			string fullPath = Path.Combine(beatmapFolder, osuFilePath);
-			overmapper.Overmap(fullPath);
+				string fullPath = Path.Combine(beatmapFolder, osuFilePath);
+				overmapper.Overmap(fullPath);
+				using var fileStream = new FileStream(folderName + ".osz", FileMode.Create);
+				using var archive = new ZipArchive(fileStream, ZipArchiveMode.Create, true);
+
+				foreach (string osuFile in Directory.EnumerateFiles(beatmapFolder))
+				{
+					if (Path.GetExtension(osuFile) != ".osu")
+						continue;
+
+					var entry = archive.CreateEntryFromFile(osuFile, Path.GetFileName(osuFile));
+				}
+
+				Process proc = new Process();
+				proc.StartInfo.FileName = fileStream.Name;
+				proc.StartInfo.UseShellExecute = true;
+				proc.Start();
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show("Unknown error occured during beatmap creation. Report this issue on my github");
+				MessageBox.Show(ex.ToString());
+			}
+
 		}
 	}
 }
