@@ -7,5 +7,7 @@ namespace BeatmapOvermapperGUI
 	{
 		public ICommand CreateCommand
 		{ get; } = new CreateCommand();
+		public ICommand SelectBPMCommand
+		{ get; } = new SelectBPMCommand();
 	}
 }

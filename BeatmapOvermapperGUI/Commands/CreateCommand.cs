@@ -1,4 +1,5 @@
 ﻿using BeatmapOvermapper;
+using BeatmapOvermapperGUI.WarningHandling;
 using OsuMemoryDataProvider;
 using System.Diagnostics;
 using System.IO;
@@ -41,8 +42,7 @@ namespace BeatmapOvermapperGUI.Commands
 			}
 			catch(Exception ex)
 			{
-				MessageBox.Show("Unknown error occured during beatmap creation. Report this issue on my github");
-				MessageBox.Show(ex.ToString());
+				ShowMessageBox.ShowMessage(ex);
 			}
 
 		}
