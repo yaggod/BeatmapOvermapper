@@ -2,6 +2,7 @@
 using OsuMemoryDataProvider;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace BeatmapOvermapperGUI.Commands
 {
 	internal class SelectBPMCommand : ICommand
 	{
+		private const int MaximumRecommendedBPM = 160;
+		private const int MinimumRecommendedBPM = 80;
 		private static StructuredOsuMemoryReader _memoryReader = StructuredOsuMemoryReader.Instance;
 
 		public event EventHandler? CanExecuteChanged;
@@ -26,8 +29,11 @@ namespace BeatmapOvermapperGUI.Commands
 
 			var beatmap = Helpers.OsuMemoryReader.GetCurrentBeatmap();
 			OsuFile file = beatmap.OsuFile;
-			settings.MaximumBPM = (int) file.TimingPoints.TimingList.Where(item => !item.IsInherit).Max(item => item.Bpm);
-			settings.MinimumBPM = (int) file.TimingPoints.TimingList.Where(item => !item.IsInherit).Min(item => item.Bpm);
+			int possibleMaxBpm = (int)file.TimingPoints.TimingList.Where(item => !item.IsInherit).Max(item => item.Bpm);
+			int possibleMinBpm = (int)file.TimingPoints.TimingList.Where(item => !item.IsInherit).Min(item => item.Bpm);
+
+			settings.MaximumBPM = Math.Min(possibleMaxBpm, MaximumRecommendedBPM);
+			settings.MinimumBPM = Math.Max(possibleMinBpm, MinimumRecommendedBPM);
 			
 		}
 	}	
