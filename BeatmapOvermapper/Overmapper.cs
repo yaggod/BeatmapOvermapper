@@ -23,7 +23,17 @@ namespace BeatmapOvermapper
 
 		private void Overmap(OsuFile beatmap, string originalPath)
 		{
+			List<List<RawHitObject>> validPatterns = GetPatternsToModify(beatmap);
+			List<RawHitObject> objectsToAdd = GetNewNotes(validPatterns);
+			beatmap.HitObjects.HitObjectList.AddRange(objectsToAdd);
+
 			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
+			beatmap.GetHashCode();
+			beatmap.SaveToDirectory(originalPath, "[OVERMAPPED] " + beatmap.Metadata.Version);
+		}
+
+		private List<List<RawHitObject>> GetPatternsToModify(OsuFile beatmap)
+		{
 			var hitObjects = beatmap.HitObjects.HitObjectList;
 			List<List<RawHitObject>> validPatterns = new();
 			List<RawHitObject> currentPattern = new();
@@ -32,7 +42,7 @@ namespace BeatmapOvermapper
 			{
 				if (currentObject.RawType.HasFlag(RawObjectType.Spinner) == true)
 					continue;
-				if(lastObject == null)
+				if (lastObject == null)
 				{
 					lastObject = currentObject;
 					continue;
@@ -61,20 +71,23 @@ namespace BeatmapOvermapper
 				lastObject = currentObject;
 			}
 
+			return validPatterns;
+		}
 
+		private List<RawHitObject> GetNewNotes(List<List<RawHitObject>> validPatterns)
+		{
 			List<RawHitObject> objectsToAdd = new();
-			foreach(var pattern in validPatterns)
+			foreach (var pattern in validPatterns)
 			{
 				RawHitObject lastNote = pattern.First();
-				foreach(var currentNote in pattern.Skip(1))
+				foreach (var currentNote in pattern.Skip(1))
 				{
 					objectsToAdd.Add(GetNewNote(lastNote, currentNote));
 					lastNote = currentNote;
 				}
 			}
 
-			beatmap.HitObjects.HitObjectList.AddRange(objectsToAdd);
-			beatmap.SaveToDirectory(originalPath, "[OVERMAPPED] " + beatmap.Metadata.Version);
+			return objectsToAdd;
 		}
 
 		private RawHitObject GetNewNote(RawHitObject first, RawHitObject second)
