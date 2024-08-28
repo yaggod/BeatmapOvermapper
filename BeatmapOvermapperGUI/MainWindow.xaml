@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BeatmapOvermapperGUI"
+        xmlns:contexts="clr-namespace:BeatmapOvermapperGUI.Contexts"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         mc:Ignorable="d"
         Title="MainWindow" Height="360" Width="440" ResizeMode="NoResize">
     <Window.DataContext>
-        <local:MainContext/>
+        <contexts:MainContext/>
     </Window.DataContext>
     <StackPanel Background="#501c8c">
         <StackPanel.Resources>

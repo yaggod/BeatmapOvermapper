@@ -1,4 +1,5 @@
 ﻿using BeatmapOvermapper;
+using BeatmapOvermapperGUI.Helpers;
 using BeatmapOvermapperGUI.WarningHandling;
 using OsuMemoryDataProvider;
 using System.Diagnostics;
@@ -11,8 +12,6 @@ namespace BeatmapOvermapperGUI.Commands
 {
 	class CreateCommand : ICommand
 	{
-		private static StructuredOsuMemoryReader _memoryReader = StructuredOsuMemoryReader.Instance;
-
 		public event EventHandler? CanExecuteChanged;
 
 		public bool CanExecute(object? parameter)
@@ -31,14 +30,10 @@ namespace BeatmapOvermapperGUI.Commands
 		{
 			try
 			{
-				_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
-				string folderName = _memoryReader.OsuMemoryAddresses.Beatmap.FolderName;
-				string beatmapFolder = Path.Combine(Settings.SongsFolder, folderName);
-				string osuFileName = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
+				var beatmap = Helpers.OsuMemoryReader.GetCurrentBeatmap();
 
-				string fullPath = Path.Combine(beatmapFolder, osuFileName);
-				overmapper.Overmap(fullPath);
-				OszCreator.GenerateAndAddOsz(Settings.SongsFolder, folderName);
+				overmapper.Overmap(beatmap.FullPath);
+				OszCreator.GenerateAndAddOsz(Settings.SongsFolder, beatmap.FolderName);
 			}
 			catch(Exception ex)
 			{

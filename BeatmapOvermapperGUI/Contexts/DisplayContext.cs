@@ -10,8 +10,6 @@ namespace BeatmapOvermapperGUI.Contexts
     class DisplayContext : INotifyPropertyChanged
     {
         #region Fields
-        private static StructuredOsuMemoryReader _memoryReader = StructuredOsuMemoryReader.Instance;
-
         private DispatcherTimer _timer = new();
         private string? _backgroundPath;
         private string? _beatmapName;
@@ -32,13 +30,10 @@ namespace BeatmapOvermapperGUI.Contexts
         {
             try
             {
-                _memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
-                string beatmapFolder = Path.Combine(Settings.SongsFolder, _memoryReader.OsuMemoryAddresses.Beatmap.FolderName);
-                string osuFilePath = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
-                var fullPath = Path.Combine(beatmapFolder, osuFilePath);
-                OsuFile file = OsuFile.ReadFromFile(fullPath);
+                var beatmap = Helpers.OsuMemoryReader.GetCurrentBeatmap();
+				OsuFile file = beatmap.OsuFile;
                 var backgroundFile = file.Events.BackgroundInfo.Filename;
-                BackgroundPath = Path.Combine(beatmapFolder, backgroundFile);
+                BackgroundPath = Path.Combine(beatmap.BeatmapFolderPath, backgroundFile);
                 BeatmapName = file.Metadata.Title;
                 DifficultyName = file.Metadata.Version;
             }
