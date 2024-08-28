@@ -1,4 +1,5 @@
-﻿using OsuMemoryDataProvider;
+﻿using Coosu.Beatmap;
+using OsuMemoryDataProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,13 @@ namespace BeatmapOvermapperGUI.Commands
 
 		public void Execute(object? parameter)
 		{
-			throw new NotImplementedException();
+			OvermapperSettings settings = parameter as OvermapperSettings ?? throw new ArgumentException();
+
+			var beatmap = Helpers.OsuMemoryReader.GetCurrentBeatmap();
+			OsuFile file = beatmap.OsuFile;
+			settings.MaximumBPM = (int) file.TimingPoints.TimingList.Where(item => !item.IsInherit).Max(item => item.Bpm);
+			settings.MinimumBPM = (int) file.TimingPoints.TimingList.Where(item => !item.IsInherit).Min(item => item.Bpm);
+			
 		}
-	}
+	}	
 }

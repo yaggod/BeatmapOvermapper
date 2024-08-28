@@ -65,8 +65,8 @@
                 </Label>
                 <xctk:RangeSlider Grid.Row="0" Grid.Column="2" x:Name="BpmSlider" VerticalAlignment="Center" 
                         Minimum="0" Maximum="300" TickFrequency="1" IsSnapToTickEnabled="True"
-                        LowerValue="{Binding OvermapperSettings.MinimumBPM}"
-                        HigherValue="{Binding OvermapperSettings.MaximumBPM}"/>
+                        LowerValue="{Binding OvermapperSettings.MinimumBPM, Mode=TwoWay}"
+                        HigherValue="{Binding OvermapperSettings.MaximumBPM, Mode=TwoWay}"/>
             </Grid>
         </Border>
         <Border Padding="8 8 8 8">
