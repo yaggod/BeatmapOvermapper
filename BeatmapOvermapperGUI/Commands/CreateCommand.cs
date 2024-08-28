@@ -34,9 +34,9 @@ namespace BeatmapOvermapperGUI.Commands
 				_memoryReader.TryRead(_memoryReader.OsuMemoryAddresses.Beatmap);
 				string folderName = _memoryReader.OsuMemoryAddresses.Beatmap.FolderName;
 				string beatmapFolder = Path.Combine(Settings.SongsFolder, folderName);
-				string osuFilePath = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
+				string osuFileName = _memoryReader.OsuMemoryAddresses.Beatmap.OsuFileName;
 
-				string fullPath = Path.Combine(beatmapFolder, osuFilePath);
+				string fullPath = Path.Combine(beatmapFolder, osuFileName);
 				overmapper.Overmap(fullPath);
 				OszCreator.GenerateAndAddOsz(Settings.SongsFolder, folderName);
 			}
