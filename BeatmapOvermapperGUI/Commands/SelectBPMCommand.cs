@@ -12,8 +12,8 @@ namespace BeatmapOvermapperGUI.Commands
 {
 	internal class SelectBPMCommand : ICommand
 	{
-		private const int MaximumRecommendedBPM = 160;
-		private const int MinimumRecommendedBPM = 80;
+		private const int MaximumRecommendedBPM = 180;
+		private const int MinimumRecommendedBPM = 110;
 		private static StructuredOsuMemoryReader _memoryReader = StructuredOsuMemoryReader.Instance;
 
 		public event EventHandler? CanExecuteChanged;
