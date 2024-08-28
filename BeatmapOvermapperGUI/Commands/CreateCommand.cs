@@ -1,4 +1,5 @@
 ﻿using BeatmapOvermapper;
+using BeatmapOvermapper.Validators;
 using BeatmapOvermapperGUI.Helpers;
 using BeatmapOvermapperGUI.WarningHandling;
 using OsuMemoryDataProvider;
@@ -22,7 +23,8 @@ namespace BeatmapOvermapperGUI.Commands
 		public void Execute(object? parameter)
 		{
 			OvermapperSettings settings = parameter as OvermapperSettings ?? throw new ArgumentException();
-			BeatmapOvermapper.Overmapper overmapper = new(settings.MinimumBPM, settings.MaximumBPM);
+			PatternValidationProcessor processor = settings.Processor;
+			BeatmapOvermapper.Overmapper overmapper = new(processor);
 			CreateMap(overmapper);
 		}
 
